@@ -12,8 +12,11 @@ Ejercicio 1.
 Programe la función void swap(int *a, int *b), la cual
 intercambia los valores de las variables apuntadas por a y b.
 */
-void swap(int *a, int *b) {
-
+void swap(int *a, int *b) 
+{
+   int temp = *a;
+   *a = *b;
+   *b = temp;
 }
 
 /*
@@ -22,8 +25,23 @@ Programe la función void arrayMaxMin(int *a, int n, int *max, int *min),
 la cual encuentra el máximo y el mínimo valor del arreglo a y los
 almacena en las variables apuntadas por max y min.
 */
-void arrayMaxMin(int *a, int n, int *max, int *min) {
-    
+void arrayMaxMin(int *a, int n, int *max, int *min) 
+{
+   *max = a[0];
+   *min = a[0];
+
+   for (size_t k = 0 ; k < n ; k++)
+   {
+      if (a[k] > *max)
+      {
+         *max = a[k];
+      }
+      if (a[k] < *min)
+      {
+         *min = a[k];
+      }
+   } 
+ 
 }
 
 
@@ -44,7 +62,9 @@ typedef struct {
 Persona* crearPersona(char nombre[], char rut[], int edad) {
    Persona * p = (Persona *) malloc(sizeof(Persona));
    //asignar valores de entrada a los campos de p
-
+   strcpy(p->nombre, nombre);
+   strcpy(p->rut, rut);
+   p->edad = edad;
 
    return p;
 }
@@ -62,8 +82,12 @@ typedef struct {
    int capacidad; // capacidad del arreglo
 } Vector;
 
-Vector * crearVector(int n) {
-   return NULL;
+Vector * crearVector(int n)
+{
+   Vector *vector = (Vector *) malloc(sizeof(Vector));
+   vector->datos = (int *) calloc(n, sizeof(int));
+   vector->capacidad = n; 
+   return vector;
 }
 
 /*
@@ -71,7 +95,14 @@ Ejercicio 5a.
 Programe la función void asignarValor(Vector * v, int i, int valor), 
 la cual asigna el valor a la posición i del vector v.
 */
-void asignarValor(Vector * v, int i, int valor) {
+void asignarValor(Vector * v, int i, int valor)
+{
+   /*if (i < 0 || i >= v->capacidad)
+   {
+      printf("error: la posicion esta fuera del tamaño del vector");
+      return;
+   }*/
+   v->datos[i] = valor; //asumiendo que el "indice" esta dentro del tamaño del vector, sino descomentar el codigo superior
 
 }
 
@@ -80,8 +111,9 @@ Ejercicio 6.
 Programe la función int obtenerValor(Vector * v, int i), 
 la cual retorna el valor en la posición i del vector v.
 */
-int obtenerValor(Vector * v, int i) {
-   return 0;
+int obtenerValor(Vector * v, int i)
+{
+   return v->datos[i]; //el mismo comentario de arriba
 }
 
 /*
@@ -98,6 +130,20 @@ Ejercicio 8.
 Use las operaciones implementadas de vectores para 
 sumar (a1,a2)+(b1+b2). Almacene el resultado en el vector c.
 */
-void sumaV2(int a1, int a2, int b1, int b2, Vector *c){
+void sumaV2(int a1, int a2, int b1, int b2, Vector *c)
+{
+   Vector* a = crearVector(2);
+   Vector* b = crearVector(2);//creamos vectores
 
+   asignarValor (a, 0, a1); //usamos la funcion asignar valores para...asignar valores
+   asignarValor (a, 1, a2);
+   asignarValor (b, 0, b1);
+   asignarValor (b, 1, b2);
+
+   sumaV (a, b, c);
+
+   free(a->datos); //liberamos memoria del arreglo dinámico "a"
+   free(a); //liberamos memoria de a
+   free(b->datos); // "" b
+   free(b); // "" b
 }
